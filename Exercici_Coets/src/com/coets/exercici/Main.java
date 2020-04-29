@@ -6,7 +6,7 @@ public class Main {
 
 	public static void main(String[] args) {
 		
-		//FASE 01 y 02
+		//FASE 01 y 02 
 		Rocket firstRocket = new Rocket("32WESSDS");
 		Rocket secondRocket = new Rocket("LDSFJA32");
 		
@@ -26,7 +26,8 @@ public class Main {
 		secondRocket.setThrusters(secondThrusters);
 		
 		System.out.println(firstRocket + "\n" + secondRocket);
-
+		//FASE 03
+		firstRocket.accelerate(40);
 	}
 
 }

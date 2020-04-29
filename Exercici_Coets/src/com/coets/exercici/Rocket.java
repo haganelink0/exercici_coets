@@ -27,6 +27,28 @@ public class Rocket {
 	public void setThrusters(ArrayList<Thruster> thrusters) {
 		this.thrusters = thrusters;
 	}
+	
+	public void accelerate(int speedObjective) {
+		for(Thruster t : thrusters) {
+			
+			Runnable thrusterThread = new ThrusterThreads(t,speedObjective,thrusters.indexOf(t));
+			Thread thread = new Thread(thrusterThread);
+			thread.start();
+		}
+	}
+	
+	public void slowDown(int speedObjective) {
+		for (Thruster t : thrusters) {
+			if (t.getCurrentSpeed() > speedObjective) {
+				Runnable thrusterThread = new ThrusterThreads(t,speedObjective, thrusters.indexOf(t));
+				Thread thread = new Thread(thrusterThread);
+				thread.start();
+			} else {
+				System.out.println("Thruster " + (thrusters.indexOf(t)+1) + "is going at " + t.getCurrentSpeed()
+									+". Unable to slow down.");
+			}
+		}
+	}
 
 	@Override
 	public String toString() {
