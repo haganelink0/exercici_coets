@@ -5,11 +5,14 @@ import java.util.ArrayList;
 public class Rocket {
 	private String code;
 	private ArrayList<Thruster> thrusters;
+	private double currentSpeed;
+
 	
 	public Rocket(String code) {
 		super();
 		this.code = code;
 		this.thrusters = new ArrayList<Thruster>();
+		this.currentSpeed = 0.0;
 	}
 
 	public String getCode() {
@@ -28,26 +31,43 @@ public class Rocket {
 		this.thrusters = thrusters;
 	}
 	
-	public void accelerate(int speedObjective) {
-		for(Thruster t : thrusters) {
-			
-			Runnable thrusterThread = new ThrusterThreads(t,speedObjective,thrusters.indexOf(t));
-			Thread thread = new Thread(thrusterThread);
-			thread.start();
+	
+	
+	public double getCurrentSpeed() {
+		return currentSpeed;
+	}
+
+	public void setCurrentSpeed() {
+		double ThrustersSpeed = 0;
+		for(Thruster t: thrusters) {
+			ThrustersSpeed += t.getCurrentSpeed();
 		}
+		this.currentSpeed = this.currentSpeed + 100 * Math.sqrt(ThrustersSpeed);
+	}
+
+	public void accelerate(int speedObjective) throws InterruptedException {
+		ArrayList<Thread> threads = new ArrayList<Thread>();
+		for(Thruster t : thrusters) {
+			Thread thrusterThread = new ThrusterUp(t,speedObjective,thrusters.indexOf(t));
+			thrusterThread.start();
+			threads.add(thrusterThread);
+		}
+		for(int i = 0; i < threads.size(); i++) {
+			threads.get(i).join();
+		}	
 	}
 	
-	public void slowDown(int speedObjective) {
+	public void slowDown(int speedObjective) throws InterruptedException {
+		ArrayList<Thread> threads = new ArrayList<Thread>();
 		for (Thruster t : thrusters) {
-			if (t.getCurrentSpeed() > speedObjective) {
-				Runnable thrusterThread = new ThrusterThreads(t,speedObjective, thrusters.indexOf(t));
-				Thread thread = new Thread(thrusterThread);
-				thread.start();
-			} else {
-				System.out.println("Thruster " + (thrusters.indexOf(t)+1) + "is going at " + t.getCurrentSpeed()
-									+". Unable to slow down.");
-			}
+				Thread thrusterThread = new ThrusterDown(t,speedObjective,thrusters.indexOf(t));
+				thrusterThread.start();
+				threads.add(thrusterThread);
 		}
+		for(int i = 0; i < threads.size(); i++) {
+			threads.get(i).join();
+		}
+
 	}
 
 	@Override

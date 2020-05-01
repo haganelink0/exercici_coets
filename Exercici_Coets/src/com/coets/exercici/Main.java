@@ -2,6 +2,7 @@ package com.coets.exercici;
 
 import java.util.ArrayList;
 
+
 public class Main {
 
 	public static void main(String[] args) {
@@ -27,7 +28,22 @@ public class Main {
 		
 		System.out.println(firstRocket + "\n" + secondRocket);
 		//FASE 03
-		firstRocket.accelerate(40);
+
+		try {
+			firstRocket.accelerate(40);
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		try {
+			firstRocket.slowDown(20);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println(firstRocket + "\n" + secondRocket);
+
 	}
 
 }

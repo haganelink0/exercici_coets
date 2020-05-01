@@ -40,7 +40,7 @@ public class Thruster {
 
 	@Override
 	public String toString() {
-		return ""+maxSpeed;
+		return "Current Speed" + currentSpeed +"MaxSpeed:"+maxSpeed;
 	}
 	
 	
